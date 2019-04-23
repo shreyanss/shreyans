@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-rules-test-yml
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$1   
+spec:
+  tls:
+  - secretName: tls-secret
+  rules:
+  - http:
+      paths:
+      - path: "/testkube"
+        backend:
+          serviceName: first-demo-app-yml-kube
+          servicePort: 8081
+      - path: "/hostdetails/?(.*)"
+        backend:
+          serviceName: hostdetails-springapp
+          servicePort: 80
+      - path: "/angular"
+        backend:
+          serviceName: angular-frontend-lb
+          servicePort: 5000
